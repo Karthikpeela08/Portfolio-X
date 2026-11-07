@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${displayName} + ' | Portfolio'">Portfolio</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&amp;family=DM+Serif+Display&amp;family=Fredoka:wght@400;600;700&amp;family=Lora:wght@400;600&amp;family=Nunito:wght@400;600;800&amp;family=Playfair+Display:wght@600;800&amp;family=Plus+Jakarta+Sans:wght@400;600;800&amp;family=Poppins:wght@400;600;700&amp;family=Space+Grotesk:wght@400;600;700&amp;display=swap">
+    <link rel="stylesheet" href="/portfolio.css">
+</head>
+<body class="pf-page">
+<div class="pf-shell">
+<div th:class="'pf theme-' + ${theme} + ' font-' + ${font} + ' layout-' + ${layout}">
+    <header class="pf-hero">
+        <div class="pf-avatar" th:text="${initials}">AB</div>
+        <h1 th:text="${displayName}">Name</h1>
+        <p class="pf-headline" th:if="${!#strings.isEmpty(portfolio.headline)}" th:text="${portfolio.headline}"></p>
+        <div class="pf-links"
+             th:if="${portfolio.githubUrl != null or portfolio.linkedinUrl != null or portfolio.contactEmail != null}">
+            <a th:if="${portfolio.githubUrl != null}" th:href="${portfolio.githubUrl}" target="_blank" rel="noopener">GitHub</a>
+            <a th:if="${portfolio.linkedinUrl != null}" th:href="${portfolio.linkedinUrl}" target="_blank" rel="noopener">LinkedIn</a>
+            <a th:if="${portfolio.contactEmail != null}" th:href="'mailto:' + ${portfolio.contactEmail}">Email me</a>
+        </div>
+    </header>
+
+    <main class="pf-main">
+        <section th:if="${!#strings.isEmpty(portfolio.about)}">
+            <h2>About me</h2>
+            <p class="pf-about" th:text="${portfolio.about}"></p>
+        </section>
+
+        <section th:if="${!#lists.isEmpty(skillList)}">
+            <h2>Skills</h2>
+            <div>
+                <span class="pf-chip" th:each="s : ${skillList}" th:text="${s}"></span>
+            </div>
+        </section>
+
+        <section th:if="${!#lists.isEmpty(portfolio.projects)}">
+            <h2>Projects</h2>
+            <div class="pf-grid">
+                <div class="pf-card" th:each="pr : ${portfolio.projects}">
+                    <h3 th:text="${pr.title}"></h3>
+                    <p th:if="${!#strings.isEmpty(pr.description)}" th:text="${pr.description}"></p>
+                    <a th:if="${pr.repoUrl != null}" th:href="${pr.repoUrl}" target="_blank" rel="noopener">View project</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="pf-foot" th:if="${!download}">
+        Made with <a href="/">Portfolio X</a>. <a href="/register">Create yours in 2 minutes</a>
+    </footer>
+    <footer class="pf-foot" th:if="${download}">Made with Portfolio X</footer>
+</div>
+</div>
+
+<div class="pf-tools" th:if="${!download}">
+    <button type="button" id="pdfBtn">Save as PDF</button>
+    <a th:href="@{/u/{u}/download(u=${portfolio.user.username})}">Download website</a>
+</div>
+<script src="/portfolio-print.js" th:if="${!download}"></script>
+</body>
+</html>

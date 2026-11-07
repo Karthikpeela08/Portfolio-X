@@ -1,0 +1,201 @@
+/* Shared by the public portfolio page and the live preview in the editor.
+   A portfolio is:  .pf  +  theme-*  (colours)  +  font-*  (typography)  +  layout-*  (arrangement) */
+
+.pf-shell { container-type: inline-size; }
+
+/* ---------- Colour themes ---------- */
+.pf {
+    --hero: #5b3df5; --acc: #ffc845; --page: #f1eeff; --card: #ffffff;
+    --text: #1b1840; --muted: #5f5c82; --chip: #e5dfff; --chip-text: #4529d6; --link: #4529d6;
+    --avatar-text: var(--hero);
+    --font-head: 'Plus Jakarta Sans', 'Segoe UI', Arial, sans-serif;
+    --font-body: 'Plus Jakarta Sans', 'Segoe UI', Arial, sans-serif;
+    font-family: var(--font-body);
+    background: var(--page);
+    color: var(--text);
+    line-height: 1.6;
+}
+.pf.theme-ocean    { --hero: #0b7285; --acc: #ffd166; --page: #e8f6f8; --text: #0b2a33; --muted: #3f6670; --chip: #cdeff3; --chip-text: #07505e; --link: #07505e; }
+.pf.theme-sunset   { --hero: #d9480f; --acc: #ffd43b; --page: #fff4ec; --text: #3a1a0a; --muted: #7a4a30; --chip: #ffe1cc; --chip-text: #a63d05; --link: #a63d05; }
+.pf.theme-forest   { --hero: #25793a; --acc: #ffe066; --page: #eef8f0; --text: #10301a; --muted: #3e6b4b; --chip: #d3f0da; --chip-text: #1b5e2e; --link: #1b5e2e; }
+.pf.theme-midnight { --hero: #1e1f4b; --acc: #7dd3fc; --page: #0e0f23; --card: #181a38; --text: #ecebff; --muted: #a9a7d1; --chip: #2a2d5e; --chip-text: #bfe6ff; --link: #7dd3fc; --avatar-text: #1e1f4b; }
+.pf.theme-rose     { --hero: #d6336c; --acc: #ffe066; --page: #fff0f5; --text: #3b0d1e; --muted: #7d4a5e; --chip: #ffdeeb; --chip-text: #a61e4d; --link: #a61e4d; }
+.pf.theme-mint     { --hero: #087f5b; --acc: #ffa94d; --page: #e6fcf5; --text: #0b3326; --muted: #3e6b5c; --chip: #c3fae8; --chip-text: #087f5b; --link: #087f5b; }
+.pf.theme-slate    { --hero: #343a40; --acc: #fab005; --page: #f1f3f5; --text: #212529; --muted: #5c636a; --chip: #dee2e6; --chip-text: #343a40; --link: #1864ab; }
+.pf.theme-neon     { --hero: #14141b; --acc: #c6ff3d; --page: #0a0a0f; --card: #15151c; --text: #f4f4f5; --muted: #a1a1aa; --chip: #1f2a10; --chip-text: #c6ff3d; --link: #c6ff3d; --avatar-text: #14141b; }
+.pf.theme-sand     { --hero: #5c4033; --acc: #e9b44c; --page: #f7f1e8; --text: #2b2118; --muted: #6f5d4c; --chip: #eadcc7; --chip-text: #5c4033; --link: #8a4b1f; }
+
+/* ---------- Fonts ---------- */
+.pf.font-elegant  { --font-head: 'Playfair Display', Georgia, serif; --font-body: 'Lora', Georgia, serif; }
+.pf.font-techy    { --font-head: 'Space Grotesk', 'Segoe UI', sans-serif; --font-body: 'Space Grotesk', 'Segoe UI', sans-serif; }
+.pf.font-friendly { --font-head: 'Poppins', 'Segoe UI', sans-serif; --font-body: 'Poppins', 'Segoe UI', sans-serif; }
+.pf.font-playful  { --font-head: 'Fredoka', 'Trebuchet MS', sans-serif; --font-body: 'Nunito', 'Segoe UI', sans-serif; }
+.pf.font-stylish  { --font-head: 'DM Serif Display', Georgia, serif; --font-body: 'DM Sans', 'Segoe UI', sans-serif; }
+.pf h1, .pf h2, .pf h3, .pf-avatar { font-family: var(--font-head); }
+.pf.font-stylish h1, .pf.font-stylish h2, .pf.font-stylish h3 { font-weight: 400; }
+
+body.pf-page { margin: 0; }
+.pf-page .pf { min-height: 100vh; }
+
+/* ---------- Hero (shared) ---------- */
+.pf-hero {
+    position: relative; overflow: hidden;
+    background: var(--hero);
+    color: #fff;
+    text-align: center;
+    padding: 52px 20px 56px;
+    border-bottom: 8px solid var(--acc);
+}
+/* soft decorative shapes */
+.pf-hero::before, .pf-hero::after { content: ""; position: absolute; border-radius: 50%; pointer-events: none; }
+.pf-hero::before { width: 260px; height: 260px; right: -70px; top: -90px; background: rgba(255, 255, 255, 0.09); }
+.pf-hero::after  { width: 150px; height: 150px; left: -40px; bottom: -60px; background: var(--acc); opacity: 0.35; }
+.pf-hero > * { position: relative; z-index: 1; animation: pf-rise 0.6s both; }
+.pf-hero > :nth-child(2) { animation-delay: 0.08s; }
+.pf-hero > :nth-child(3) { animation-delay: 0.16s; }
+.pf-hero > :nth-child(4) { animation-delay: 0.24s; }
+@keyframes pf-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+.pf-avatar {
+    width: 104px; height: 104px; border-radius: 50%;
+    background: #fff; color: var(--avatar-text);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.3rem; font-weight: 800;
+    margin: 0 auto 18px;
+    box-shadow: 0 0 0 6px var(--acc);
+}
+.pf-hero h1 { margin: 0; font-size: 2.4rem; font-weight: 800; line-height: 1.15; }
+.pf-headline { margin: 8px 0 0; font-size: 1.15rem; }
+.pf-links { margin-top: 22px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.pf-links a {
+    background: #fff; color: #1b1840;
+    padding: 9px 20px; border-radius: 999px;
+    font-weight: 700; font-size: 14px; text-decoration: none;
+    transition: transform 0.15s, background 0.15s;
+}
+.pf-links a:hover { background: var(--acc); transform: translateY(-2px); }
+
+/* ---------- Content (shared) ---------- */
+.pf-main { max-width: 760px; margin: 0 auto; padding: 8px 20px 36px; }
+.pf-main section { margin-top: 32px; }
+.pf-main h2 {
+    display: inline-block;
+    margin: 0 0 14px; padding-bottom: 4px;
+    font-size: 1.3rem;
+    border-bottom: 4px solid var(--acc);
+}
+.pf-about { margin: 0; white-space: pre-line; font-size: 1.05rem; }
+
+.pf-chip {
+    display: inline-block;
+    padding: 6px 16px; margin: 0 8px 8px 0;
+    border-radius: 999px;
+    background: var(--chip); color: var(--chip-text);
+    font-weight: 600; font-size: 14px;
+    transition: transform 0.15s;
+}
+.pf-chip:hover { transform: scale(1.07) rotate(-1deg); }
+
+.pf-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; }
+.pf-card {
+    background: var(--card);
+    border-radius: 12px;
+    border-top: 6px solid var(--acc);
+    padding: 18px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.10);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.pf-card:hover { transform: translateY(-4px); box-shadow: 0 10px 22px rgba(0, 0, 0, 0.16); }
+.pf-card h3 { margin: 0 0 6px; font-size: 1.1rem; }
+.pf-card p { margin: 0 0 10px; color: var(--muted); }
+.pf-card a { color: var(--link); font-weight: 700; }
+
+.pf-foot { text-align: center; padding: 24px 20px 36px; color: var(--muted); font-size: 13px; }
+.pf-foot a { color: var(--link); font-weight: 700; }
+
+/* ---------- Layout: SIDEBAR (profile panel on the left) ---------- */
+@container (min-width: 640px) {
+    .pf.layout-sidebar {
+        display: grid;
+        grid-template-columns: 290px minmax(0, 1fr);
+        grid-template-rows: 1fr auto;
+        grid-template-areas: "hero main" "hero foot";
+    }
+    .pf.layout-sidebar .pf-hero {
+        grid-area: hero; text-align: left;
+        border-bottom: 0; border-right: 8px solid var(--acc);
+        padding: 44px 26px;
+    }
+    .pf.layout-sidebar .pf-avatar { margin: 0 0 20px; }
+    .pf.layout-sidebar .pf-hero h1 { font-size: 1.9rem; }
+    .pf.layout-sidebar .pf-links { flex-direction: column; align-items: stretch; }
+    .pf.layout-sidebar .pf-links a { text-align: center; }
+    .pf.layout-sidebar .pf-main { grid-area: main; width: 100%; padding: 16px 32px 24px; margin: 0; max-width: none; }
+    .pf.layout-sidebar .pf-foot { grid-area: foot; }
+}
+
+/* ---------- Layout: BOLD (big type, sticker avatar, numbered sections) ---------- */
+.pf.layout-bold .pf-hero {
+    text-align: left;
+    padding: 56px max(20px, calc((100% - 760px) / 2)) 52px;
+}
+.pf.layout-bold .pf-avatar {
+    width: 92px; height: 92px; border-radius: 22px;
+    transform: rotate(-5deg); margin: 0 0 24px;
+    box-shadow: 7px 7px 0 var(--acc);
+}
+.pf.layout-bold .pf-hero h1 {
+    font-size: clamp(2.4rem, 11cqw, 5rem);
+    line-height: 1.02; letter-spacing: -0.02em; font-weight: 800;
+}
+.pf.layout-bold .pf-headline {
+    display: inline-block; margin-top: 16px;
+    background: var(--acc); color: #1b1840;
+    padding: 5px 16px; border-radius: 4px;
+    font-weight: 700; transform: rotate(-1deg);
+}
+.pf.layout-bold .pf-links { justify-content: flex-start; }
+.pf.layout-bold .pf-links a { background: transparent; color: #fff; box-shadow: inset 0 0 0 2px #fff; }
+.pf.layout-bold .pf-links a:hover { background: var(--acc); color: #1b1840; box-shadow: inset 0 0 0 2px var(--acc); }
+.pf.layout-bold .pf-main { counter-reset: sec; }
+.pf.layout-bold .pf-main section { counter-increment: sec; }
+.pf.layout-bold .pf-main h2 {
+    display: block; border-bottom: 0; border-top: 3px solid var(--text);
+    padding: 10px 0 0; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 0.04em;
+}
+.pf.layout-bold .pf-main h2::before {
+    content: counter(sec, decimal-leading-zero); margin-right: 12px;
+    color: var(--link); font-size: 0.75em;
+}
+.pf.layout-bold .pf-card {
+    border-radius: 4px; border: 3px solid var(--text);
+    box-shadow: 6px 6px 0 var(--acc);
+}
+.pf.layout-bold .pf-card:hover { transform: translate(-2px, -2px); box-shadow: 9px 9px 0 var(--acc); }
+.pf.layout-bold .pf-chip { border-radius: 4px; border: 2px solid var(--text); background: transparent; color: var(--text); }
+.pf.layout-bold .pf-about { font-size: 1.15rem; }
+
+@media (prefers-reduced-motion: reduce) {
+    .pf *, .pf *::before, .pf *::after { animation: none !important; transition: none !important; }
+}
+
+/* ---------- floating download buttons (public page only) ---------- */
+.pf-tools { position: fixed; right: 16px; bottom: 16px; display: flex; gap: 8px; z-index: 50; }
+.pf-tools button, .pf-tools a {
+    font-family: 'Plus Jakarta Sans', 'Segoe UI', Arial, sans-serif;
+    background: #fff; color: #1b1840; border: 2px solid #1b1840; border-radius: 999px;
+    padding: 9px 16px; font-weight: 700; font-size: 13px; text-decoration: none; cursor: pointer;
+    box-shadow: 0 4px 0 #1b1840; transition: transform 0.12s, box-shadow 0.12s;
+}
+.pf-tools button:hover, .pf-tools a:hover { transform: translateY(2px); box-shadow: 0 2px 0 #1b1840; background: #ffc845; }
+
+/* ---------- printing / Save as PDF ---------- */
+@media print {
+    @page { margin: 10mm; }
+    .pf, .pf * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .pf-page .pf { min-height: 0; }
+    .pf-tools { display: none !important; }
+    .pf-hero > * { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .pf-card, .pf-main section { break-inside: avoid; }
+    .pf-card:hover, .pf-chip:hover { transform: none; box-shadow: none; }
+}

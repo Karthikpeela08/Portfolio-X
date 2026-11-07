@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Portfolio X</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="container">
+    <h1>Login</h1>
+    <p class="success" th:if="${param.registered}">Registration successful. Please log in.</p>
+    <p class="error" th:if="${error}" th:text="${error}"></p>
+    <form method="post" action="/login">
+        <input name="username" placeholder="Username" required>
+        <input name="password" type="password" placeholder="Password" required>
+        <button>Login</button>
+    </form>
+    <p>New here? <a href="/register">Create an account</a> | <a href="/">Home</a></p>
+</div>
+</body>
+</html>

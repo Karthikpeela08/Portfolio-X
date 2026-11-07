@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Edit your portfolio - Portfolio X</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&amp;family=DM+Serif+Display&amp;family=Fredoka:wght@400;600;700&amp;family=Lora:wght@400;600&amp;family=Nunito:wght@400;600;800&amp;family=Playfair+Display:wght@600;800&amp;family=Plus+Jakarta+Sans:wght@400;600;800&amp;family=Poppins:wght@400;600;700&amp;family=Space+Grotesk:wght@400;600;700&amp;display=swap">
+    <link rel="stylesheet" href="/portfolio.css">
+    <link rel="stylesheet" href="/editor.css">
+</head>
+<body class="ed-body" th:with="cur=${portfolio.theme != null ? portfolio.theme : 'violet'}, curFont=${portfolio.font != null ? portfolio.font : 'modern'}, curLayout=${portfolio.layout != null ? portfolio.layout : 'classic'}">
+
+<header class="ed-top">
+    <b>Portfolio X</b>
+    <nav>
+        <a class="top-btn" th:href="@{/u/{u}(u=${portfolio.user.username})}" target="_blank">View my live page</a>
+        <a class="top-btn" th:href="@{/u/{u}(u=${portfolio.user.username},print=1)}" target="_blank" title="Opens your saved page. Choose 'Save as PDF' in the print window.">Download PDF</a>
+        <a class="top-btn" th:href="@{/u/{u}/download(u=${portfolio.user.username})}" title="Downloads your saved page as one HTML file">Download website</a>
+        <a class="top-btn ghost" href="/logout">Logout</a>
+    </nav>
+</header>
+
+<div class="ed-grid">
+
+    <!-- ============ LEFT: simple form ============ -->
+    <div class="ed-left">
+        <p class="notice ok" th:if="${param.welcome}">Welcome! Your page is already live. Change the boxes below and watch it update on the right.</p>
+        <p class="notice ok" th:if="${param.saved}">Saved! Your page is up to date.</p>
+        <p class="notice ok" th:if="${usernameSaved}" th:text="${usernameSaved}"></p>
+        <p class="notice err" th:if="${usernameError}" th:text="${usernameError}"></p>
+
+        <section class="step magic">
+            <h2>Quick start: just tell us about yourself</h2>
+            <p class="hint">Type or paste anything: your name, what you study, your skills, your projects, your links. We will build your portfolio from it. You can fix anything afterwards.</p>
+            <textarea id="magicText" rows="6" placeholder="Hi, I'm Karthik, a 3rd year Computer Science student. I know Java, Spring Boot and MySQL. I built a Library Management System using Java and MySQL. My GitHub is github.com/yourname and my email is you@example.com"></textarea>
+            <button type="button" id="magicBtn" class="magic-btn">Create my portfolio from this</button>
+            <button type="button" id="magicExample" class="link-btn">See an example</button>
+            <p class="magic-msg" id="magicMsg" role="status"></p>
+        </section>
+
+        <form id="edForm" method="post" action="/dashboard/save" th:attr="data-username=${portfolio.user.username}">
+
+            <section class="step">
+                <h2><span class="n">1</span>Who are you?</h2>
+                <label for="fullName">Your name</label>
+                <input id="fullName" name="fullName" placeholder="e.g. Karthik Peela" th:value="${portfolio.fullName}">
+                <label for="headline">What do you do?</label>
+                <input id="headline" name="headline" placeholder="e.g. Computer Science student" th:value="${portfolio.headline}">
+                <p class="hint">Not sure? Click one:</p>
+                <div>
+                    <button type="button" class="pick headline-pick" data-text="Computer Science student">Computer Science student</button>
+                    <button type="button" class="pick headline-pick" data-text="Web developer">Web developer</button>
+                    <button type="button" class="pick headline-pick" data-text="Java developer">Java developer</button>
+                    <button type="button" class="pick headline-pick" data-text="UI/UX designer">UI/UX designer</button>
+                    <button type="button" class="pick headline-pick" data-text="Data analyst">Data analyst</button>
+                </div>
+            </section>
+
+            <section class="step">
+                <h2><span class="n">2</span>Tell visitors about you</h2>
+                <p class="hint">Two or three sentences is perfect.</p>
+                <textarea id="about" name="about" rows="5" placeholder="I'm a student who loves..." th:text="${portfolio.about}"></textarea>
+            </section>
+
+            <section class="step">
+                <h2><span class="n">3</span>Your skills</h2>
+                <p class="hint">Click to add or remove. You can also type your own, separated by commas.</p>
+                <div>
+                    <button type="button" class="pick skill-pick" data-skill="Java">Java</button>
+                    <button type="button" class="pick skill-pick" data-skill="Python">Python</button>
+                    <button type="button" class="pick skill-pick" data-skill="HTML">HTML</button>
+                    <button type="button" class="pick skill-pick" data-skill="CSS">CSS</button>
+                    <button type="button" class="pick skill-pick" data-skill="JavaScript">JavaScript</button>
+                    <button type="button" class="pick skill-pick" data-skill="SQL">SQL</button>
+                    <button type="button" class="pick skill-pick" data-skill="MySQL">MySQL</button>
+                    <button type="button" class="pick skill-pick" data-skill="Spring Boot">Spring Boot</button>
+                    <button type="button" class="pick skill-pick" data-skill="React">React</button>
+                    <button type="button" class="pick skill-pick" data-skill="Git">Git</button>
+                    <button type="button" class="pick skill-pick" data-skill="Figma">Figma</button>
+                    <button type="button" class="pick skill-pick" data-skill="Teamwork">Teamwork</button>
+                </div>
+                <input id="skills" name="skills" placeholder="Java, HTML, CSS" th:value="${portfolio.skills}">
+            </section>
+
+            <section class="step">
+                <h2><span class="n">4</span>Your projects</h2>
+                <p class="hint">Add the things you have built. A name is enough to start.</p>
+                <div id="projList">
+                    <div class="proj-row" th:each="pr : ${portfolio.projects}">
+                        <input name="projTitle" placeholder="Project name" th:value="${pr.title}">
+                        <textarea name="projDesc" rows="2" placeholder="What does it do? One or two sentences" th:text="${pr.description}"></textarea>
+                        <input name="projLink" placeholder="Link to the project (optional)" th:value="${pr.repoUrl}">
+                        <button type="button" class="proj-remove">Remove this project</button>
+                    </div>
+                </div>
+                <button type="button" id="addProj" class="add-proj">+ Add a project</button>
+                <template id="projTpl">
+                    <div class="proj-row">
+                        <input name="projTitle" placeholder="Project name">
+                        <textarea name="projDesc" rows="2" placeholder="What does it do? One or two sentences"></textarea>
+                        <input name="projLink" placeholder="Link to the project (optional)">
+                        <button type="button" class="proj-remove">Remove this project</button>
+                    </div>
+                </template>
+            </section>
+
+            <section class="step">
+                <h2><span class="n">5</span>How can people reach you?</h2>
+                <p class="hint">All optional. Leave blank to hide.</p>
+                <label for="githubUrl">GitHub link</label>
+                <input id="githubUrl" name="githubUrl" placeholder="github.com/yourname" th:value="${portfolio.githubUrl}">
+                <label for="linkedinUrl">LinkedIn link</label>
+                <input id="linkedinUrl" name="linkedinUrl" placeholder="linkedin.com/in/yourname" th:value="${portfolio.linkedinUrl}">
+                <label for="contactEmail">Email</label>
+                <input id="contactEmail" name="contactEmail" placeholder="you@example.com" th:value="${portfolio.contactEmail}">
+            </section>
+
+            <section class="step">
+                <h2><span class="n">6</span>Pick a look</h2>
+
+                <p class="opt-title">Colours</p>
+                <div class="swatches">
+                    <label class="swatch" th:each="t : ${themes}">
+                        <input type="radio" name="theme" th:value="${t}" th:checked="${t == cur}">
+                        <span th:class="'dot ' + ${t}"></span>
+                        <span class="nm" th:text="${t}"></span>
+                    </label>
+                </div>
+
+                <p class="opt-title">Font style</p>
+                <div class="opts">
+                    <label class="opt"><input type="radio" name="font" value="modern" th:checked="${curFont == 'modern'}"><span class="fontbox fs-modern">Aa</span><span class="nm">Modern</span></label>
+                    <label class="opt"><input type="radio" name="font" value="elegant" th:checked="${curFont == 'elegant'}"><span class="fontbox fs-elegant">Aa</span><span class="nm">Elegant</span></label>
+                    <label class="opt"><input type="radio" name="font" value="techy" th:checked="${curFont == 'techy'}"><span class="fontbox fs-techy">Aa</span><span class="nm">Techy</span></label>
+                    <label class="opt"><input type="radio" name="font" value="friendly" th:checked="${curFont == 'friendly'}"><span class="fontbox fs-friendly">Aa</span><span class="nm">Friendly</span></label>
+                    <label class="opt"><input type="radio" name="font" value="playful" th:checked="${curFont == 'playful'}"><span class="fontbox fs-playful">Aa</span><span class="nm">Playful</span></label>
+                    <label class="opt"><input type="radio" name="font" value="stylish" th:checked="${curFont == 'stylish'}"><span class="fontbox fs-stylish">Aa</span><span class="nm">Stylish</span></label>
+                </div>
+
+                <p class="opt-title">Layout</p>
+                <div class="opts">
+                    <label class="opt"><input type="radio" name="layout" value="classic" th:checked="${curLayout == 'classic'}"><span class="wire wire-classic"></span><span class="nm">Classic</span></label>
+                    <label class="opt"><input type="radio" name="layout" value="sidebar" th:checked="${curLayout == 'sidebar'}"><span class="wire wire-sidebar"></span><span class="nm">Sidebar</span></label>
+                    <label class="opt"><input type="radio" name="layout" value="bold" th:checked="${curLayout == 'bold'}"><span class="wire wire-bold"></span><span class="nm">Bold</span></label>
+                </div>
+            </section>
+
+            <div class="savebar">
+                <button type="submit" class="save">Save my portfolio</button>
+            </div>
+        </form>
+
+        <details class="step account">
+            <summary>Change my username</summary>
+            <p class="hint">Your page link is made from your username. Changing it changes your link.</p>
+            <form method="post" action="/dashboard/username">
+                <input name="newUsername" th:value="${portfolio.user.username}" required>
+                <button type="submit" class="add-proj">Change username</button>
+            </form>
+        </details>
+    </div>
+
+    <!-- ============ RIGHT: live preview ============ -->
+    <aside class="ed-right">
+        <div class="ed-sticky">
+            <p class="hint">Live preview. This is what visitors will see after you save.</p>
+            <div class="ed-frame">
+                <div class="pf-shell"><div id="pv" th:class="'pf theme-' + ${cur} + ' font-' + ${curFont} + ' layout-' + ${curLayout}">
+                    <header class="pf-hero">
+                        <div class="pf-avatar" id="pvAvatar"></div>
+                        <h1 id="pvName"></h1>
+                        <p class="pf-headline" id="pvHeadline"></p>
+                        <div class="pf-links" id="pvLinks"></div>
+                    </header>
+                    <main class="pf-main">
+                        <section id="pvAboutSec"><h2>About me</h2><p class="pf-about" id="pvAbout"></p></section>
+                        <section id="pvSkillsSec"><h2>Skills</h2><div id="pvSkills"></div></section>
+                        <section id="pvProjSec"><h2>Projects</h2><div class="pf-grid" id="pvProjects"></div></section>
+                    </main>
+                    <footer class="pf-foot">Made with Portfolio X</footer>
+                </div></div>
+            </div>
+        </div>
+    </aside>
+</div>
+
+<script src="/analyzer.js"></script>
+<script src="/editor.js"></script>
+</body>
+</html>

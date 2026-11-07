@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register - Portfolio X</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="container">
+    <h1>Create your portfolio</h1>
+    <p class="error" th:if="${error}" th:text="${error}"></p>
+    <form method="post" action="/register">
+        <input name="username" placeholder="Username (becomes your link)" required>
+        <input name="email" type="email" placeholder="Email" required>
+        <input name="password" type="password" placeholder="Password (min 6 characters)" required>
+        <button>Register</button>
+    </form>
+    <p>Already have an account? <a href="/login">Login</a> | <a href="/">Home</a></p>
+</div>
+</body>
+</html>

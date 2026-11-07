@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Portfolio X - build your portfolio in 2 minutes</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&amp;family=DM+Serif+Display:ital@0;1&amp;family=Fredoka:wght@400;600&amp;family=Lora:wght@400;600&amp;family=Plus+Jakarta+Sans:wght@400;600;800&amp;family=Poppins:wght@400;600&amp;family=Playfair+Display:wght@600;800&amp;family=Space+Grotesk:wght@400;600&amp;display=swap">
+    <link rel="stylesheet" href="/landing.css">
+</head>
+<body class="landing">
+<div class="wrap">
+
+    <nav class="nav">
+        <a class="logo" href="/">Portfolio<span>X</span></a>
+        <a class="btn ghost" href="/login">Login</a>
+    </nav>
+
+    <header class="hero">
+        <span class="blob b1"></span><span class="blob b2"></span>
+        <div>
+            <h1>Your portfolio, built from <em>a few lines</em> about you.</h1>
+            <p class="lead">Type who you are, what you know and what you have built. Portfolio X turns it into a good-looking page with your own link. No coding. No design skills.</p>
+            <div class="cta">
+                <a class="btn" href="/register">Create my portfolio</a>
+                <a class="btn ghost" href="/login">I already have one</a>
+            </div>
+        </div>
+        <div class="mocks" aria-hidden="true">
+            <div class="mock m1">
+                <div class="bar"><i></i><i></i><i></i></div>
+                <div class="hero-m"><div class="av">KP</div><b>Karthik Peela</b><small>Computer Science student</small></div>
+                <div class="body"><div class="chips"><span>Java</span><span>MySQL</span><span>HTML</span></div><div class="cards"><div></div><div></div></div></div>
+            </div>
+            <div class="mock m2">
+                <div class="bar"><i></i><i></i><i></i></div>
+                <div class="hero-m"><div class="av">AR</div><b>Anitha Raj</b><small>UI/UX designer</small></div>
+                <div class="body"><div class="chips"><span>Figma</span><span>Canva</span></div><div class="cards"><div></div><div></div></div></div>
+            </div>
+            <div class="mock m3">
+                <div class="bar"><i></i><i></i><i></i></div>
+                <div class="hero-m"><div class="av">SM</div><b>Sam Mehta</b><small>IoT engineer</small></div>
+                <div class="body"><div class="chips"><span>Arduino</span><span>C++</span><span>MQTT</span></div><div class="cards"><div></div><div></div></div></div>
+            </div>
+        </div>
+    </header>
+
+    <section class="section">
+        <h2>How it works</h2>
+        <p class="sub">Three steps, about two minutes.</p>
+        <div class="steps">
+            <div class="step-card"><div class="num">1</div><h3>Tell us about you</h3><p>Write a few lines in your own words. We pick out your name, skills and projects.</p></div>
+            <div class="step-card"><div class="num">2</div><h3>Make it yours</h3><p>Watch the page appear live. Change the colours, font and layout with one click.</p></div>
+            <div class="step-card"><div class="num">3</div><h3>Share your link</h3><p>Send your personal link to friends, teachers and recruiters.</p></div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>Pick your style</h2>
+        <p class="sub">10 colour themes, 6 font styles and 3 layouts to mix and match.</p>
+        <div class="strip">
+            <div>
+                <h3>Colours</h3>
+                <div class="dots">
+                    <i style="background:#5b3df5"></i><i style="background:#0b7285"></i><i style="background:#d9480f"></i>
+                    <i style="background:#25793a"></i><i style="background:#1e1f4b"></i><i style="background:#d6336c"></i>
+                    <i style="background:#087f5b"></i><i style="background:#343a40"></i><i style="background:#14141b;border-color:#c6ff3d"></i>
+                    <i style="background:#5c4033"></i>
+                </div>
+            </div>
+            <div>
+                <h3>Fonts</h3>
+                <div class="fonts">
+                    <span style="font-family:'Plus Jakarta Sans',sans-serif;font-weight:800">Aa</span>
+                    <span style="font-family:'Playfair Display',serif;font-weight:800">Aa</span>
+                    <span style="font-family:'Space Grotesk',sans-serif">Aa</span>
+                    <span style="font-family:'Poppins',sans-serif">Aa</span>
+                    <span style="font-family:'Fredoka',sans-serif">Aa</span>
+                    <span style="font-family:'DM Serif Display',serif">Aa</span>
+                </div>
+            </div>
+            <div class="layouts">
+                <h3>Layouts</h3>
+                <span>Classic</span><span>Sidebar</span><span>Bold</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>Made with Portfolio X</h2>
+        <p class="sub" th:if="${#lists.isEmpty(portfolios)}">No portfolios yet. Be the first!</p>
+        <div class="explore">
+            <a class="person" th:each="p : ${portfolios}"
+               th:with="nm=${p.fullName != null and !#strings.isEmpty(p.fullName) ? p.fullName : p.user.username}"
+               th:classappend="'t-' + ${p.theme != null ? p.theme : 'violet'}"
+               th:href="@{/u/{u}(u=${p.user.username})}">
+                <span class="ini" th:text="${#strings.toUpperCase(#strings.substring(nm, 0, 1))}">K</span>
+                <span><b th:text="${nm}">Name</b><small th:text="${p.headline}"></small></span>
+            </a>
+        </div>
+    </section>
+
+    <footer class="foot">Portfolio X. A full-stack project built with Spring Boot, MySQL and Thymeleaf.</footer>
+</div>
+</body>
+</html>
